@@ -7503,7 +7503,7 @@ class AeroEngine3D {
     const parent = this.canvas.parentElement;
     if (!parent) return;
     const rect = parent.getBoundingClientRect();
-    this.dpr = window.devicePixelRatio || 1;
+    this.dpr = Math.min(window.devicePixelRatio || 1, 1.25);
 
     let targetW = 800;
     let targetH = 520;
@@ -7756,15 +7756,28 @@ class AeroEngine3D {
     return { x: screenX, y: screenY, scale, z: z2 };
   }
 
+  isVisible() {
+    return Boolean(this.canvas && this.canvas.offsetParent !== null && this.canvas.clientWidth > 0);
+  }
+
   startLoop() {
-    const loop = () => {
-      // Dynamic auto-detection: when returning from another tab or when viewport size changes
-      const parent = this.canvas.parentElement;
-      if (parent && parent.clientWidth > 0) {
-        if (Math.abs(parent.clientWidth - this.width) > 6 || Math.abs(parent.clientHeight - this.height) > 6) {
-          this.initCanvasSize();
-        }
+    let lastRenderTime = 0;
+    const targetFps = 40; // Silky-smooth 40 FPS caps CPU workload
+    const frameInterval = 1000 / targetFps;
+
+    const loop = (timestamp) => {
+      requestAnimationFrame(loop);
+
+      // 1. If canvas or parent is hidden (e.g. inactive tab), skip rendering completely!
+      if (!this.canvas || this.canvas.offsetParent === null || this.canvas.clientWidth === 0) {
+        return;
       }
+
+      // 2. Throttle rendering to target FPS for massive CPU & battery savings
+      if (timestamp && (timestamp - lastRenderTime < frameInterval)) {
+        return;
+      }
+      lastRenderTime = timestamp || 0;
 
       try {
         this.updatePhysics();
@@ -7772,9 +7785,18 @@ class AeroEngine3D {
       } catch (err) {
         console.warn('AeroEngine3D render error:', err);
       }
-      requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
+
+    // Efficient layout listener: Zero per-frame layout queries
+    if (typeof ResizeObserver !== 'undefined' && this.canvas.parentElement) {
+      this.resizeObserver = new ResizeObserver(() => {
+        if (this.isVisible()) {
+          this.initCanvasSize();
+        }
+      });
+      this.resizeObserver.observe(this.canvas.parentElement);
+    }
   }
 
   updatePhysics() {
@@ -9559,7 +9581,7 @@ class Subsystem3DViewer {
     const parent = this.canvas.parentElement;
     if (!parent) return;
     const rect = parent.getBoundingClientRect();
-    this.dpr = window.devicePixelRatio || 1;
+    this.dpr = Math.min(window.devicePixelRatio || 1, 1.25);
 
     let targetW = 600;
     let targetH = 360;
@@ -9809,14 +9831,28 @@ class Subsystem3DViewer {
     return { x: screenX, y: screenY, scale, z: z2 };
   }
 
+  isVisible() {
+    return Boolean(this.canvas && this.canvas.offsetParent !== null && this.canvas.clientWidth > 0);
+  }
+
   startLoop() {
-    const loop = () => {
-      const parent = this.canvas.parentElement;
-      if (parent && parent.clientWidth > 0) {
-        if (Math.abs(parent.clientWidth - this.width) > 6 || Math.abs(parent.clientHeight - this.height) > 6) {
-          this.initCanvasSize();
-        }
+    let lastRenderTime = 0;
+    const targetFps = 40; // Silky-smooth 40 FPS caps CPU workload
+    const frameInterval = 1000 / targetFps;
+
+    const loop = (timestamp) => {
+      requestAnimationFrame(loop);
+
+      // 1. If canvas is hidden, skip rendering completely
+      if (!this.canvas || this.canvas.offsetParent === null || this.canvas.clientWidth === 0) {
+        return;
       }
+
+      // 2. Frame limiter to target FPS
+      if (timestamp && (timestamp - lastRenderTime < frameInterval)) {
+        return;
+      }
+      lastRenderTime = timestamp || 0;
 
       try {
         this.updatePhysics();
@@ -9824,9 +9860,18 @@ class Subsystem3DViewer {
       } catch (err) {
         console.warn('Subsystem3DViewer render error:', err);
       }
-      requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
+
+    // Efficient layout listener: Zero per-frame layout queries
+    if (typeof ResizeObserver !== 'undefined' && this.canvas.parentElement) {
+      this.resizeObserver = new ResizeObserver(() => {
+        if (this.isVisible()) {
+          this.initCanvasSize();
+        }
+      });
+      this.resizeObserver.observe(this.canvas.parentElement);
+    }
   }
 
   updatePhysics() {
@@ -13139,7 +13184,7 @@ class MissionPlanner {
     this.ai = aiEngine;
     this.soundFx = soundFx;
 
-    this.dpr = window.devicePixelRatio || 1;
+    this.dpr = Math.min(window.devicePixelRatio || 1, 1.25);
     this.width = 800;
     this.height = 600;
 
@@ -13255,14 +13300,22 @@ class MissionPlanner {
   }
 
   startRadarLoop() {
-    const loop = () => {
-      // Dynamic auto-resize check
-      const parent = this.canvas.parentElement;
-      if (parent && parent.clientWidth > 0) {
-        if (Math.abs(parent.clientWidth - this.width) > 2 || Math.abs(parent.clientHeight - this.height) > 2) {
-          this.initCanvasSize();
-        }
+    let lastRenderTime = 0;
+    const targetFps = 30; // 30 FPS is ideal for tactical mission radar
+    const frameInterval = 1000 / targetFps;
+
+    const loop = (timestamp) => {
+      requestAnimationFrame(loop);
+
+      // Skip completely if radar canvas or parent is hidden (e.g. inactive tab)
+      if (!this.canvas || this.canvas.offsetParent === null || this.canvas.clientWidth === 0) {
+        return;
       }
+
+      if (timestamp && (timestamp - lastRenderTime < frameInterval)) {
+        return;
+      }
+      lastRenderTime = timestamp || 0;
 
       try {
         this.updateMissionPhysics();
@@ -13270,9 +13323,18 @@ class MissionPlanner {
       } catch (err) {
         console.warn('MissionPlanner render error:', err);
       }
-      requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
+
+    // Efficient layout listener: Zero per-frame layout queries
+    if (typeof ResizeObserver !== 'undefined' && this.canvas.parentElement) {
+      this.resizeObserver = new ResizeObserver(() => {
+        if (this.canvas && this.canvas.offsetParent !== null && this.canvas.clientWidth > 0) {
+          this.initCanvasSize();
+        }
+      });
+      this.resizeObserver.observe(this.canvas.parentElement);
+    }
   }
 
   getBases() {
@@ -13379,8 +13441,11 @@ class MissionPlanner {
       spdAltEl.textContent = `${Math.round(this.uav.speedKts)} KTS • ${Math.round(this.uav.altitude).toLocaleString()} FT`;
     }
 
-    // Update dynamic recovery metrics in DOM
-    this.updateRecoveryBasesMetrics();
+    // Update dynamic recovery metrics in DOM (throttled to 2 Hz to prevent layout thrashing)
+    if (!this.lastMetricsUpdate || Date.now() - this.lastMetricsUpdate > 500) {
+      this.lastMetricsUpdate = Date.now();
+      this.updateRecoveryBasesMetrics();
+    }
   }
 
   updateRecoveryBasesMetrics() {
@@ -14570,20 +14635,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Run AI Diagnostic Network
     const aiResult = aiEngine.evaluate(state, fftBins);
 
-    // 3. Update DOM Telemetry Elements
+    // 3. Update DOM Telemetry Elements (Top HUD always; Twin gauges only when active)
     updateTelemetryUI(state, aiResult);
 
-    // 4. Update FFT Canvas
-    renderFftSpectrum(fftBins);
+    // 4. Update FFT Canvas (only if visible to prevent wasteful layout & CPU draw)
+    if (fftCanvas && fftCanvas.offsetParent !== null) {
+      renderFftSpectrum(fftBins);
+    }
     if (typeof renderVibeModal === 'function') {
-      renderVibeModal();
+      const vibeModal = document.getElementById('modal-vibration');
+      if (vibeModal && vibeModal.classList.contains('active')) {
+        renderVibeModal();
+      }
     }
 
-    // 5. Update CAN-Bus Terminal
-    renderCanBusTerminal(state.canFrames);
+    // 5. Update CAN-Bus Terminal (only if visible)
+    if (canWindow && canWindow.offsetParent !== null) {
+      renderCanBusTerminal(state.canFrames);
+    }
 
-    // 6. Update Mission Advisory
-    updateMissionAdvisory(state, aiResult);
+    // 6. Update Mission Advisory (only if in mission or twin view)
+    if (currentActiveView === 'view-mission' || currentActiveView === 'view-twin') {
+      updateMissionAdvisory(state, aiResult);
+    }
   });
 
   // =========================================================================
@@ -14639,6 +14713,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (activeSection) {
       const syncCanvases = () => {
         if (targetView === 'view-twin') {
+          updateTelemetryUI(telemetry.state, aiEngine.evaluate(telemetry.state, telemetry.fftBins));
           engine3D.initCanvasSize();
           engine3D.render();
           if (subsystem3D) {
@@ -16897,6 +16972,9 @@ document.addEventListener('DOMContentLoaded', () => {
     safeSetText('hud-cht3-val', `${Math.round(state.cht[2])}°C`);
     safeSetText('hud-health-val', `${ai.healthIndex.toFixed(1)}%`);
 
+    // If twin view is not active, skip updating all internal twin cards and gauges
+    if (currentActiveView !== 'view-twin') return;
+
     // Primary Tiles
     safeSetText('tile-rpm-val', Math.round(state.rpm));
     safeSetWidth('gauge-fill-rpm', (state.rpm / 5800) * 100);
@@ -17395,6 +17473,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderFftSpectrum(fftBins) {
     if (!fftCtx || !fftCanvas) return;
+    if (fftCanvas.offsetParent === null) return;
     const w = fftCanvas.clientWidth || 300;
     const h = fftCanvas.clientHeight || 95;
     if (fftCanvas.width !== w || fftCanvas.height !== h) {
@@ -17751,17 +17830,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function safeSetText(id, text) {
     const el = document.getElementById(id);
-    if (el) el.textContent = text;
+    if (!el) return;
+    const str = String(text);
+    if (el.textContent !== str) el.textContent = str;
   }
 
   function safeSetWidth(id, pct) {
     const el = document.getElementById(id);
-    if (el) el.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+    if (!el) return;
+    const val = `${Math.min(100, Math.max(0, pct))}%`;
+    if (el.style.width !== val) el.style.width = val;
   }
 
   function safeSetHeight(id, pct) {
     const el = document.getElementById(id);
-    if (el) el.style.height = `${Math.min(100, Math.max(0, pct))}%`;
+    if (!el) return;
+    const val = `${Math.min(100, Math.max(0, pct))}%`;
+    if (el.style.height !== val) el.style.height = val;
   }
 });
 
