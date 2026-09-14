@@ -117,11 +117,9 @@ html, body {
 /* Tactical Top Navigation Header */
 .tactical-header {
   min-height: var(--header-height);
-  background: linear-gradient(180deg, rgba(12, 24, 52, 0.98) 0%, rgba(4, 9, 22, 0.98) 100%);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: #070e24;
   border-top: 1px solid rgba(0, 240, 255, 0.5);
-  border-bottom: 2.5px solid #00f0ff;
+  border-bottom: 2px solid #00f0ff;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -129,11 +127,13 @@ html, body {
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.95), 0 3px 26px rgba(0, 240, 255, 0.4), inset 0 1px 0 rgba(0, 240, 255, 0.5);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.85), 0 0 14px rgba(0, 240, 255, 0.25);
   gap: 12px 16px;
   width: 100%;
   box-sizing: border-box;
   flex-wrap: wrap;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .tactical-header::before {
@@ -142,10 +142,10 @@ html, body {
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 2.5px;
   background: linear-gradient(90deg, transparent 0%, #00f0ff 15%, #38bdf8 50%, #00f0ff 85%, transparent 100%);
   opacity: 1;
-  box-shadow: 0 0 16px #00f0ff, 0 0 32px rgba(0, 240, 255, 0.85);
+  box-shadow: 0 0 10px #00f0ff;
   pointer-events: none;
 }
 
@@ -388,14 +388,14 @@ html, body {
   color: #020817 !important;
   font-weight: 900 !important;
   letter-spacing: 0.9px !important;
-  box-shadow: 0 0 26px rgba(0, 240, 255, 0.9), 0 0 50px rgba(0, 240, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
   text-shadow: 0 0 1px rgba(0, 0, 0, 0.4) !important;
 }
 
 .tactical-btn.primary:hover,
 #btn-open-report.tactical-btn:hover {
   background: linear-gradient(135deg, #38bdf8 0%, #00f0ff 50%, #60a5fa 100%) !important;
-  box-shadow: 0 0 36px rgba(0, 240, 255, 1), 0 0 70px rgba(0, 240, 255, 0.75) !important;
+  box-shadow: 0 0 18px rgba(0, 240, 255, 0.9) !important;
   transform: translateY(-2px) scale(1.03) !important;
   border-color: #ffffff !important;
   color: #020817 !important;
@@ -410,7 +410,7 @@ html, body {
 
 .tactical-btn.danger:hover {
   background: rgba(239, 68, 68, 0.45);
-  box-shadow: 0 0 20px var(--crimson-glow);
+  box-shadow: 0 0 14px var(--crimson-glow);
   color: #ffffff;
   transform: translateY(-1px);
 }
@@ -421,14 +421,14 @@ html, body {
   border: 1.5px solid #38bdf8 !important;
   color: #ffffff !important;
   font-weight: 800 !important;
-  box-shadow: 0 0 18px rgba(56, 189, 248, 0.55), inset 0 0 8px rgba(56, 189, 248, 0.3) !important;
-  text-shadow: 0 0 8px rgba(56, 189, 248, 0.9) !important;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.45), inset 0 0 6px rgba(56, 189, 248, 0.3) !important;
+  text-shadow: 0 0 6px rgba(56, 189, 248, 0.8) !important;
 }
 #btn-open-compliance.tactical-btn:hover {
   background: linear-gradient(135deg, rgba(2, 132, 199, 0.55) 0%, rgba(3, 105, 161, 0.72) 100%) !important;
   border-color: #bae6fd !important;
   color: #ffffff !important;
-  box-shadow: 0 0 26px rgba(56, 189, 248, 0.85) !important;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.7) !important;
   transform: translateY(-1px);
 }
 
@@ -437,14 +437,14 @@ html, body {
   border: 1.5px solid #cbd5e1 !important;
   color: #ffffff !important;
   font-weight: 800 !important;
-  box-shadow: 0 0 16px rgba(203, 213, 225, 0.35) !important;
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.7) !important;
+  box-shadow: 0 0 10px rgba(203, 213, 225, 0.3) !important;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.6) !important;
 }
 #btn-open-dossier.tactical-btn:hover {
   background: linear-gradient(135deg, rgba(71, 85, 105, 1) 0%, rgba(51, 65, 85, 1) 100%) !important;
   border-color: #ffffff !important;
   color: #ffffff !important;
-  box-shadow: 0 0 22px rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.4) !important;
   transform: translateY(-1px);
 }
 
@@ -453,14 +453,14 @@ html, body {
   border: 1.5px solid #10b981 !important;
   color: #ffffff !important;
   font-weight: 800 !important;
-  box-shadow: 0 0 18px rgba(16, 185, 129, 0.55), inset 0 0 8px rgba(16, 185, 129, 0.3) !important;
-  text-shadow: 0 0 8px rgba(52, 211, 153, 0.9) !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.45), inset 0 0 6px rgba(16, 185, 129, 0.3) !important;
+  text-shadow: 0 0 6px rgba(52, 211, 153, 0.8) !important;
 }
 #btn-open-hardware.tactical-btn:hover {
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.52) 0%, rgba(5, 150, 105, 0.68) 100%) !important;
   border-color: #a7f3d0 !important;
   color: #ffffff !important;
-  box-shadow: 0 0 26px rgba(16, 185, 129, 0.85) !important;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.7) !important;
   transform: translateY(-1px);
 }
 
@@ -469,14 +469,14 @@ html, body {
   border: 1.5px solid #c084fc !important;
   color: #ffffff !important;
   font-weight: 800 !important;
-  box-shadow: 0 0 18px rgba(168, 85, 247, 0.55), inset 0 0 8px rgba(168, 85, 247, 0.3) !important;
-  text-shadow: 0 0 8px rgba(192, 132, 252, 0.9) !important;
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.45), inset 0 0 6px rgba(168, 85, 247, 0.3) !important;
+  text-shadow: 0 0 6px rgba(192, 132, 252, 0.8) !important;
 }
 #btn-open-preflight.tactical-btn:hover {
   background: linear-gradient(135deg, rgba(147, 51, 234, 0.58) 0%, rgba(126, 34, 206, 0.7) 100%) !important;
   border-color: #f3e8ff !important;
   color: #ffffff !important;
-  box-shadow: 0 0 26px rgba(168, 85, 247, 0.85) !important;
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.7) !important;
   transform: translateY(-1px);
 }
 
@@ -485,14 +485,14 @@ html, body {
   border: 2px solid #00f0ff !important;
   color: #ffffff !important;
   font-weight: 900 !important;
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.55), inset 0 0 8px rgba(0, 240, 255, 0.25) !important;
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.9) !important;
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.45), inset 0 0 6px rgba(0, 240, 255, 0.25) !important;
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.8) !important;
   padding: 7px 14px !important;
   border-radius: 6px !important;
 }
 #btn-back-to-home.tactical-btn:hover {
   background: linear-gradient(135deg, rgba(0, 240, 255, 0.55), rgba(6, 182, 212, 0.45)) !important;
-  box-shadow: 0 0 28px rgba(0, 240, 255, 0.8) !important;
+  box-shadow: 0 0 18px rgba(0, 240, 255, 0.7) !important;
   transform: translateY(-1px);
 }
 
@@ -7503,7 +7503,7 @@ class AeroEngine3D {
     const parent = this.canvas.parentElement;
     if (!parent) return;
     const rect = parent.getBoundingClientRect();
-    this.dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+    this.dpr = 1; // Native 1:1 DPR guarantees silky-fast 60 FPS rendering on all displays
 
     let targetW = 800;
     let targetH = 520;
@@ -7762,7 +7762,7 @@ class AeroEngine3D {
 
   startLoop() {
     let lastRenderTime = 0;
-    const targetFps = 40; // Silky-smooth 40 FPS caps CPU workload
+    const targetFps = 30; // Rock-solid 30 FPS saves CPU and eliminates all lag
     const frameInterval = 1000 / targetFps;
 
     const loop = (timestamp) => {
@@ -7976,38 +7976,28 @@ class AeroEngine3D {
   }
 
   renderGroundGrid() {
-    this.ctx.save();
-    this.ctx.lineWidth = 1;
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(0, 240, 255, 0.05)';
+    ctx.beginPath();
 
     const gridSize = 180;
     const step = 45;
     for (let x = -gridSize; x <= gridSize; x += step) {
       const pStart = this.project(x, 68, -gridSize);
       const pEnd = this.project(x, 68, gridSize);
-      const grad = this.ctx.createLinearGradient(pStart.x, pStart.y, pEnd.x, pEnd.y);
-      grad.addColorStop(0, 'rgba(0, 240, 255, 0.01)');
-      grad.addColorStop(0.5, 'rgba(0, 240, 255, 0.07)');
-      grad.addColorStop(1, 'rgba(0, 240, 255, 0.01)');
-      this.ctx.strokeStyle = grad;
-      this.ctx.beginPath();
-      this.ctx.moveTo(pStart.x, pStart.y);
-      this.ctx.lineTo(pEnd.x, pEnd.y);
-      this.ctx.stroke();
+      ctx.moveTo(pStart.x, pStart.y);
+      ctx.lineTo(pEnd.x, pEnd.y);
     }
     for (let z = -gridSize; z <= gridSize; z += step) {
       const pStart = this.project(-gridSize, 68, z);
       const pEnd = this.project(gridSize, 68, z);
-      const grad = this.ctx.createLinearGradient(pStart.x, pStart.y, pEnd.x, pEnd.y);
-      grad.addColorStop(0, 'rgba(0, 240, 255, 0.01)');
-      grad.addColorStop(0.5, 'rgba(0, 240, 255, 0.07)');
-      grad.addColorStop(1, 'rgba(0, 240, 255, 0.01)');
-      this.ctx.strokeStyle = grad;
-      this.ctx.beginPath();
-      this.ctx.moveTo(pStart.x, pStart.y);
-      this.ctx.lineTo(pEnd.x, pEnd.y);
-      this.ctx.stroke();
+      ctx.moveTo(pStart.x, pStart.y);
+      ctx.lineTo(pEnd.x, pEnd.y);
     }
-    this.ctx.restore();
+    ctx.stroke();
+    ctx.restore();
   }
 
   renderCrankcase() {
@@ -9389,6 +9379,24 @@ class AeroEngine3D {
       EXHAUST: 'Scavenge: Exhaust valve open • Piston rising • Hot burnt gas evacuated'
     };
 
+    // Throttle DOM HUD sync to 10 Hz (every 100ms) to eliminate per-frame layout thrashing
+    const now = Date.now();
+    if (this._lastOttoSync && (now - this._lastOttoSync < 100)) return;
+    this._lastOttoSync = now;
+
+    if (!this._hudCylCache) {
+      this._hudCylCache = [1, 2, 3, 4].map(num => {
+        const row = document.getElementById(`hud-cyl-stroke-${num}`);
+        return row ? {
+          row,
+          badge: row.querySelector('.cyl-stroke-badge'),
+          bar: row.querySelector('.cyl-progress-bar'),
+          lastText: '',
+          lastWidth: ''
+        } : null;
+      });
+    }
+
     cylOffsets.forEach((phaseOff, idx) => {
       const cylNum = idx + 1;
       const strokePhase = (this.crankAngle + phaseOff * Math.PI) % (Math.PI * 4);
@@ -9419,20 +9427,19 @@ class AeroEngine3D {
         pct = Math.round(((strokePhase - Math.PI * 3) / Math.PI) * 100);
       }
 
-      // Synchronize with DOM HUD if present
-      const rowEl = document.getElementById(`hud-cyl-stroke-${cylNum}`);
-      if (rowEl) {
-        const rawKey = strokeName.split(' ')[0];
-        rowEl.title = `Cylinder #${cylNum} ${strokeDescriptions[rawKey] || ''}`;
-        const badge = rowEl.querySelector('.cyl-stroke-badge');
-        const bar = rowEl.querySelector('.cyl-progress-bar');
-        if (badge) {
-          badge.textContent = strokeName;
-          badge.className = `cyl-stroke-badge ${badgeClass}`;
+      // Synchronize with cached DOM HUD
+      const cached = this._hudCylCache[idx];
+      if (cached) {
+        if (cached.badge && cached.lastText !== strokeName) {
+          cached.badge.textContent = strokeName;
+          cached.badge.className = `cyl-stroke-badge ${badgeClass}`;
+          cached.lastText = strokeName;
         }
-        if (bar) {
-          bar.style.width = `${Math.max(6, pct)}%`;
-          bar.style.background = strokeColor;
+        const wStr = `${Math.max(6, pct)}%`;
+        if (cached.bar && cached.lastWidth !== wStr) {
+          cached.bar.style.width = wStr;
+          cached.bar.style.background = strokeColor;
+          cached.lastWidth = wStr;
         }
       }
     });
@@ -9581,7 +9588,7 @@ class Subsystem3DViewer {
     const parent = this.canvas.parentElement;
     if (!parent) return;
     const rect = parent.getBoundingClientRect();
-    this.dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+    this.dpr = 1; // Native 1:1 DPR ensures fast smooth rendering
 
     let targetW = 600;
     let targetH = 360;
@@ -9837,7 +9844,7 @@ class Subsystem3DViewer {
 
   startLoop() {
     let lastRenderTime = 0;
-    const targetFps = 40; // Silky-smooth 40 FPS caps CPU workload
+    const targetFps = 30; // 30 FPS ensures buttery smooth interaction and cool CPU
     const frameInterval = 1000 / targetFps;
 
     const loop = (timestamp) => {
@@ -10146,6 +10153,11 @@ class Subsystem3DViewer {
   }
 
   updateReadingShowcaseDOM() {
+    // Throttle DOM updates to ~6.6 Hz (every 150ms) to eliminate innerHTML rebuild lag
+    const now = Date.now();
+    if (this._lastShowcaseSync && (now - this._lastShowcaseSync < 150)) return;
+    this._lastShowcaseSync = now;
+
     const state = this.getComponentDetailedState();
     const summaryKey = `${state.badge}|${state.degText}|${state.headline}|${state.compactSummary}`;
     if (this._lastRenderedKey === summaryKey) {
@@ -11549,8 +11561,8 @@ class TelemetryEngine {
     // Callbacks
     this.listeners = [];
 
-    // Telemetry Tick Loop
-    this.tickInterval = 100; // 10 Hz nominal
+    // Telemetry Tick Loop (5 Hz smooth nominal telemetry saves 50% CPU)
+    this.tickInterval = 200;
     this.startTick();
   }
 
@@ -13184,7 +13196,7 @@ class MissionPlanner {
     this.ai = aiEngine;
     this.soundFx = soundFx;
 
-    this.dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+    this.dpr = 1;
     this.width = 800;
     this.height = 600;
 
